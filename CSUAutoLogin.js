@@ -48,8 +48,12 @@
 
 (function () {
     'use strict';
-    const username = 'xxx';
-    const password = 'xxx*';
+    
+    // 请替换为自己的学号和密码
+    const username = '244712254';
+    const password = 'zhaoyjm2002114*';
+    // 请替换为自己的网络类型，例如 'telecomn'（电信）, 'cmccn'（移动）, 'unicomn'（联通） 或 ''（校园网）
+    const netType = '';
 
     // 如果是统一身份认证平台
     var ca = function () {
@@ -302,8 +306,6 @@
 
         // 登录函数
         function login() {
-            const netType = '';  // 替换为网络类型，例如 'telecomn'（电信）, 'cmccn'（移动）, 'unicomn'（联通） 或 ''（校园网）
-
             const userAccount = `${username}@${netType}`;
 
             const loginUrl = `https://10.1.1.1:802/eportal/portal/login?user_account=${userAccount}&user_password=${password}`;
