@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CSUAutoLogin
 // @namespace    http://tampermonkey.net/
-// @version      3.0
+// @version      3.1
 // @description  自动登录“中南大学统一身份认证平台”及使用该平台鉴权的校内网页的油猴脚本
 // @author       YJM
 
@@ -37,6 +37,8 @@
 // @match        *://10.1.1.1
 // @match        *://portal.csu.edu.cn/*
 
+// @match        *://ms.csu.edu.cn/*
+
 // 学生管理系统，很卡很难打开
 // todo http://202.197.71.125/xgxt/a
 // todo https://career.csu.edu.cn/ 毕业生才能登录？
@@ -46,8 +48,8 @@
 
 (function () {
     'use strict';
-    var username = 'xxx';
-    var password = 'xxx*';
+    const username = 'xxx';
+    const password = 'xxx*';
 
     // 如果是统一身份认证平台
     var ca = function () {
@@ -323,6 +325,18 @@
         }
     }
 
+    var ms = function () {
+        const inner_text = '登录';
+        let login_button = '/html/body/div[3]/div/div[1]/a';
+        let matchingElement = document.evaluate(login_button, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        if (matchingElement && matchingElement.innerText === inner_text) {
+            console.info('跳转统一身份认证页面中...');
+            window.location.href = 'http://userms.csu.edu.cn/login';
+        } else {
+            console.info('已登录')
+        }
+    }
+
     if (window.location.href.indexOf('ca.csu.edu.cn/authserver/login') !== -1) {
         window.addEventListener('load', ca);
     } else if (window.location.href.indexOf('mail.csu.edu.cn') !== -1) {
@@ -372,6 +386,8 @@
         window.location.href.indexOf('portal.csu.edu.cn') !== -1
     ) {
         window.addEventListener('load', portal);
+    } else if (window.location.href.indexOf('ms.csu.edu.cn') !== -1) {
+        window.addEventListener('load', ms);
     } else {
         console.error('未知页面')
     }
