@@ -1,6 +1,6 @@
 # CSUAutoLogin
 
-CSUAutoLogin 是一个用于自动登录中南大学统一身份认证平台及使用该平台鉴权的校内网页的油猴脚本。
+[CSUAutoLogin](https://github.com/3210448723/CSUAutoLogin) 是一个用于自动登录中南大学统一身份认证平台及使用该平台鉴权的校内网页的油猴脚本。
 
 ## 功能
 
