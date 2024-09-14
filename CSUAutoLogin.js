@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CSUAutoLogin
 // @namespace    http://tampermonkey.net/
-// @version      3.1
+// @version      3.2
 // @description  自动登录“中南大学统一身份认证平台”及使用该平台鉴权的校内网页的油猴脚本
 // @author       YJM
 
@@ -39,8 +39,10 @@
 
 // @match        *://ms.csu.edu.cn/*
 
-// 学生管理系统，很卡很难打开
-// todo http://202.197.71.125/xgxt/a
+// @match        *://opac.its.csu.edu.cn/NTRdrLogin.aspx
+
+// @match        *://lib.csu.edu.cn/*
+
 // todo https://career.csu.edu.cn/ 毕业生才能登录？
 
 // @grant        none
@@ -48,10 +50,10 @@
 
 (function () {
     'use strict';
-    
+
     // 请替换为自己的学号和密码
-    const username = '244712254';
-    const password = 'zhaoyjm2002114*';
+    const username = 'xxx';
+    const password = 'xxx*';
     // 请替换为自己的网络类型，例如 'telecomn'（电信）, 'cmccn'（移动）, 'unicomn'（联通） 或 ''（校园网）
     const netType = '';
 
@@ -339,6 +341,63 @@
         }
     }
 
+    var opac = function () {
+        // 点击登录按钮
+        let xpath = '//*[@id="BtnLogin"]';
+        let matchingElement = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        if (matchingElement) {
+            // Fill the username and password
+            let usernameInput = document.evaluate('//*[@id="txtName"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            let passwordInput = document.evaluate('//*[@id="txtPassWord"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            let rememberMeCheckbox = document.evaluate('//*[@id="form1"]/div[3]/div/div[1]/div/div/div[2]/div/div[1]/div/div[5]/input', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+
+            if (usernameInput) {
+                // 请输入你的学号
+                usernameInput.value = username;
+            } else {
+                console.error('脚本未找到用户名输入框！')
+            }
+
+            if (passwordInput) {
+                // 请输入你的密码
+                // 1.	本科生读者证号与缺省密码与学号相同。
+                // 2.	研究生、博士生读者证号与学号相同，从2022级开始缺省密码与学号相同，其它年级为原密码,原密码缺省为7+学号(硕士),8+学号(博士)。
+                passwordInput.value = password;
+            } else {
+                console.error('脚本未找到密码输入框！')
+            }
+
+            if (rememberMeCheckbox) {
+                // 勾选7天免登录
+                rememberMeCheckbox.checked = true;
+            } else {
+                console.error('脚本未找到记住我，下次自动登陆复选框！')
+            }
+            console.info('登陆中...')
+            matchingElement.click();
+        } else {
+            console.error('脚本未找到登录按钮！')
+        }
+    }
+
+    var lib = function () {
+        const inner_text = '登录';
+        let login_button = '//*[@id="lg"]';
+        let matchingElement = document.evaluate(login_button, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        if (matchingElement && matchingElement.innerText === inner_text) {
+            let login_a = '/html/body/div[3]/div/div[2]/div[2]/a';
+            let matchingElement = document.evaluate(login_a, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (matchingElement) {
+                console.info('跳转统一身份认证页面中...')
+                matchingElement.click();
+            } else {
+                console.error('脚本未找到登录按钮！')
+            }
+        } else {
+            console.info('已登录')
+        }
+    }
+
     if (window.location.href.indexOf('ca.csu.edu.cn/authserver/login') !== -1) {
         window.addEventListener('load', ca);
     } else if (window.location.href.indexOf('mail.csu.edu.cn') !== -1) {
@@ -390,6 +449,10 @@
         window.addEventListener('load', portal);
     } else if (window.location.href.indexOf('ms.csu.edu.cn') !== -1) {
         window.addEventListener('load', ms);
+    } else if (window.location.href.indexOf('opac.its.csu.edu.cn') !== -1) {
+        window.addEventListener('load', opac);
+    } else if (window.location.href.indexOf('lib.csu.edu.cn') !== -1) {
+        window.addEventListener('load', lib);
     } else {
         console.error('未知页面')
     }
