@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CSUAutoLogin
 // @namespace    http://tampermonkey.net/
-// @version      3.2
+// @version      3.5
 // @description  自动登录“中南大学统一身份认证平台”及使用该平台鉴权的校内网页的油猴脚本
 // @author       YJM
 
@@ -39,11 +39,17 @@
 
 // @match        *://ms.csu.edu.cn/*
 
+// 必须登录校园网
 // @match        *://opac.its.csu.edu.cn/NTRdrLogin.aspx
 
 // @match        *://lib.csu.edu.cn/*
 
 // todo https://career.csu.edu.cn/ 毕业生才能登录？
+// todo https://ylyn.csu.edu.cn/
+// @match        *://aqks.csu.edu.cn/*
+// todo https://psymea.csu.edu.cn/login.aspx
+// todo https://gracsu.yuketang.cn/pro/portal/home/
+// todo https://tscheck.cnki.net/cm/LoginYJS.aspx
 
 // @grant        none
 // ==/UserScript==
@@ -53,7 +59,7 @@
 
     // 请替换为自己的学号和密码
     const username = 'xxx';
-    const password = 'xxx*';
+    const password = 'xxx';
     // 请替换为自己的网络类型，例如 'telecomn'（电信）, 'cmccn'（移动）, 'unicomn'（联通） 或 ''（校园网）
     const netType = '';
 
@@ -398,6 +404,33 @@
         }
     }
 
+    // 实验室安全环保教育考试系统
+    var aqks = function () {
+        const inner_text = '登录';
+        let login_button = '/html/body/div[1]/div[1]/div/header/div/div[1]/div[2]/div[3]/div[1]/div';
+        let matchingElement = document.evaluate(login_button, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        // 如果matchingElement存在且其中包含inner_text且其父节点没有display: none属性
+        if (matchingElement && matchingElement.innerText.indexOf(inner_text) !== -1 && matchingElement.parentNode.style.display !== 'none') {
+            console.info('跳转统一身份认证页面中...')
+            matchingElement.click();
+        } else {
+            console.info('已登录')
+        }
+
+        // https://aqks.csu.edu.cn/lab-platform/login 页面
+        // todo 增加点击切换'//*[@id="wrapApp"]/div/div/div/div/div[3]/div[1]'统一身份认证登录
+        const inner_text1 = '统一身份认证登录';
+        let login_button1 = '//*[@id="wrapApp"]/div/div/div/div/form/div/div/div/a';
+        let matchingElement1 = document.evaluate(login_button1, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        // 如果matchingElement1存在且其中包含inner_text1
+        if (matchingElement1 && matchingElement1.innerText.indexOf(inner_text1) !== -1) {
+            console.info('跳转统一身份认证页面中...')
+            matchingElement1.click();
+        } else {
+            console.info('已登录')
+        }
+    }
+
     if (window.location.href.indexOf('ca.csu.edu.cn/authserver/login') !== -1) {
         window.addEventListener('load', ca);
     } else if (window.location.href.indexOf('mail.csu.edu.cn') !== -1) {
@@ -453,6 +486,8 @@
         window.addEventListener('load', opac);
     } else if (window.location.href.indexOf('lib.csu.edu.cn') !== -1) {
         window.addEventListener('load', lib);
+    } else if (window.location.href.indexOf('aqks.csu.edu.cn') !== -1) {
+        window.addEventListener('load', aqks);
     } else {
         console.error('未知页面')
     }
