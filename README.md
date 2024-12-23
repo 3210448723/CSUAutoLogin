@@ -1,5 +1,31 @@
-# CSUAutoLogin
+# CSUAutoLogin(English)
 
+[CSUAutoLogin]( https://github.com/3210448723/CSUAutoLogin) is an oil monkey script used to automatically log in to the unified identity authentication platform of Central South University and authenticate the campus webpage using the platform.
+
+## Function
+
+-Automatically fill in username and password
+-Automatically click the login button
+-Support multiple campus web pages, including email, library, online service hall, scholarship management system, campus unified payment platform, library seat management system, cloud drive, etc
+-Automatically detect login status, if not logged in, automatically log in
+
+## Usage method
+
+1. Install the Oil Monkey plugin. Oil Monkey is a user script manager that can run user scripts on a browser. The supported browsers include Chrome, Firefox, Safari, etc.
+
+2. Install this script in the Tampermonkey plugin.
+
+3. Fill in your student ID and password in the script. Please ensure that your student ID and password are correct, otherwise you will not be able to log in.
+
+4. Open the campus webpage that requires automatic login, and the script will run automatically.
+
+## Precautions
+
+- This script is only for learning and research purposes and may not be used for any commercial purposes.
+- Please protect your student ID and password and do not disclose them to others.
+- If you encounter any problems during use, you can submit an issue.
+
+# CSUAutoLogin（中文）
 [CSUAutoLogin](https://github.com/3210448723/CSUAutoLogin) 是一个用于自动登录中南大学统一身份认证平台及使用该平台鉴权的校内网页的油猴脚本。
 
 ## 功能
