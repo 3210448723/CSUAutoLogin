@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         CSUAutoLogin
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/3210448723/CSUAutoLogin
 // @version      3.5
 // @description  自动登录“中南大学统一身份认证平台”及使用该平台鉴权的校内网页的油猴脚本
 // @author       YJM
@@ -52,6 +52,7 @@
 // todo https://tscheck.cnki.net/cm/LoginYJS.aspx
 
 // @grant        none
+// @license MIT
 // ==/UserScript==
 
 (function () {
